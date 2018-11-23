@@ -38,7 +38,9 @@ void ofxDarkKnightSyphon::draw()
 {
     if(drawFbo)
     {
+        #ifdef TARGET_OSX
         syphonOut.publishTexture(&fbo->getTexture());
+        #endif
     }
     
 }
@@ -49,7 +51,9 @@ void ofxDarkKnightSyphon::setFbo(ofFbo * fboPtr)
     drawFbo = fboPtr != nullptr;
     if(drawFbo)
     {
+        #ifdef TARGET_OSX
         syphonOut.setName(serverName);
+        #endif
     }
 }
 

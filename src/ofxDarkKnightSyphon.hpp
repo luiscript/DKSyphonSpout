@@ -24,13 +24,18 @@
 #define ofxDarkKnightSyphon_hpp
 
 #include "ofMain.h"
-#include "ofxSyphon.h"
 #include "module.hpp"
+
+#ifdef TARGET_OSX
+#include "ofxSyphon.h"
+#endif
 
 class ofxDarkKnightSyphon : public Module
 {
 private:
+    #ifdef TARGET_OSX
     ofxSyphonServer syphonOut;
+    #endif
     ofFbo * fbo;
     bool drawFbo = false;
     string serverName;
@@ -45,5 +50,6 @@ public:
     ofFbo * getFbo();
     void onTextInputEvent(ofxDatGuiTextInputEvent);
 };
+
 
 #endif /* ofxDarkKnightSyphon_hpp */
