@@ -83,3 +83,121 @@ void ofxDarkKnightSyphon::onTextInputEvent(ofxDatGuiTextInputEvent e)
 {
     serverName = e.target->getText();
 }
+
+
+
+
+void DarkKnightSyphonClient::setup()
+{
+    alpha = 255;
+    fbo = nullptr;
+    drawFbo = false;
+    serverDirectory.setup();
+    syphonClient.setup();
+    
+    ofAddListener(serverDirectory.events.serverAnnounced, this, &DarkKnightSyphonClient::serverAnnounced);
+    // ofAddListener(serverDirectory.events.serverRetired, this, &DarkKnightSyphonClient::serverRetired);
+    
+    fbo = new ofFbo;
+    fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGB32F_ARB);
+    fbo->begin();
+    ofClear(0, 0, 0, 0);
+    fbo->end();
+    
+    serversList = serverDirectory.getServerList();
+    
+    for (auto server : serversList)
+    {
+        string option = server.serverName + ":" + server.appName;
+        serverOptions.push_back(option);
+    }
+    
+    updateDropDownOptions();
+}
+
+void DarkKnightSyphonClient::update()
+{
+    
+}
+
+void DarkKnightSyphonClient::draw()
+{
+    if(drawFbo)
+    {
+        fbo->begin();
+        syphonClient.draw(0, 0);
+        
+        ofPushStyle();
+        ofSetColor(0, 0, 0, 255 - alpha);
+        ofFill();
+        ofDrawRectangle(0, 0, getModuleWidth(), getModuleHeight());
+        ofPopStyle();
+        
+        fbo->end();
+    }
+    
+}
+
+
+ofFbo * DarkKnightSyphonClient::getFbo()
+{
+    return fbo;
+}
+
+
+void DarkKnightSyphonClient::drawMasterOutput()
+{
+    drawOutputConnection();
+}
+
+void DarkKnightSyphonClient::drawMasterInput()
+{
+    
+}
+
+void DarkKnightSyphonClient::addModuleParameters()
+{
+    
+    gui->addDropdown("Select syphon server", serverOptions)->onDropdownEvent(this, &DarkKnightSyphonClient::onServerSelected)
+    ;
+    gui->addSlider("Alpha", 0, 255)->bind(alpha);
+}
+
+void DarkKnightSyphonClient::onServerSelected(ofxDatGuiDropdownEvent e)
+{
+    serverIndex = e.child;
+    syphonClient.set(serverDirectory.getDescription(serverIndex));
+    drawFbo = true;
+}
+
+void DarkKnightSyphonClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg)
+{
+    
+    for (auto & dir : arg.servers)
+    {
+        string option = dir.serverName + ":" + dir.appName;
+        serverOptions.push_back(option);
+    }
+    
+    updateDropDownOptions();
+}
+
+void DarkKnightSyphonClient::updateDropDownOptions()
+{
+    vector<ofxDatGuiComponent*> items = gui->getItems();
+    int x = 0;
+    for (auto item : items)
+    {
+        if(ofToLower(item->getName()) == "select syphon server")
+        {
+            items.erase(items.begin() + x);
+        }
+        x++;
+    }
+    
+    gui->setItems(items);
+    gui->addDropdown("Select syphon server", serverOptions)->onDropdownEvent(this, &DarkKnightSyphonClient::onServerSelected);
+    
+    gui->setTheme(this->getGuiTheme());
+    gui->setWidth(450);
+}

@@ -51,5 +51,31 @@ public:
     void onTextInputEvent(ofxDatGuiTextInputEvent);
 };
 
+class DarkKnightSyphonClient : public Module{
+private:
+    ofxSyphonClient syphonClient;
+    ofxSyphonServerDirectory serverDirectory;
+    ofFbo * fbo;
+    bool drawFbo = false;
+    int serverIndex;
+    vector<ofxSyphonServerDescription> serversList;
+    vector<string> serverOptions;
+    int alpha;
+public:
+    void setup();
+    void update();
+    void draw();
+    void drawMasterOutput();
+    void drawMasterInput();
+    void addModuleParameters();
+    
+    void serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg);
+    void serverRetired(ofxSyphonServerDirectoryEventArgs &args);
+    
+    void onServerSelected(ofxDatGuiDropdownEvent e);
+    void updateDropDownOptions();
+    
+    ofFbo * getFbo();
+};
 
 #endif /* ofxDarkKnightSyphon_hpp */
