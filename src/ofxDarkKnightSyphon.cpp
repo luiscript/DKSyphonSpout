@@ -198,6 +198,5 @@ void DarkKnightSyphonClient::updateDropDownOptions()
     gui->setItems(items);
     gui->addDropdown("Select syphon server", serverOptions)->onDropdownEvent(this, &DarkKnightSyphonClient::onServerSelected);
     
-    gui->setTheme(this->getGuiTheme());
     gui->setWidth(450);
 }
