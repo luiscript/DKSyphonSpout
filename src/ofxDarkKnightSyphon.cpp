@@ -99,7 +99,7 @@ void DarkKnightSyphonClient::setup()
     // ofAddListener(serverDirectory.events.serverRetired, this, &DarkKnightSyphonClient::serverRetired);
     
     fbo = new ofFbo;
-    fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGB32F_ARB);
+    fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGBA, 4);
     fbo->begin();
     ofClear(0, 0, 0, 0);
     fbo->end();
