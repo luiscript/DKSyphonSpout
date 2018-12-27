@@ -27,6 +27,8 @@ void ofxDarkKnightSyphon::setup()
 {
     fbo = nullptr;
     serverName = "output";
+    addInputConnection(ConnectionType::DK_FBO);
+    addOutputConnection(ConnectionType::DK_FBO);
 }
 
 void ofxDarkKnightSyphon::update()
@@ -60,17 +62,6 @@ void ofxDarkKnightSyphon::setFbo(ofFbo * fboPtr)
 ofFbo * ofxDarkKnightSyphon::getFbo()
 {
     return fbo;
-}
-
-
-void ofxDarkKnightSyphon::drawMasterOutput()
-{
-    drawOutputConnection();
-}
-
-void ofxDarkKnightSyphon::drawMasterInput()
-{
-    drawInputConnection();
 }
 
 void ofxDarkKnightSyphon::addModuleParameters()
@@ -113,6 +104,8 @@ void DarkKnightSyphonClient::setup()
     }
     
     updateDropDownOptions();
+    
+    addOutputConnection(ConnectionType::DK_FBO);
 }
 
 void DarkKnightSyphonClient::update()
@@ -142,17 +135,6 @@ void DarkKnightSyphonClient::draw()
 ofFbo * DarkKnightSyphonClient::getFbo()
 {
     return fbo;
-}
-
-
-void DarkKnightSyphonClient::drawMasterOutput()
-{
-    drawOutputConnection();
-}
-
-void DarkKnightSyphonClient::drawMasterInput()
-{
-    
 }
 
 void DarkKnightSyphonClient::addModuleParameters()

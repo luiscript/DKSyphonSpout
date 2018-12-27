@@ -43,8 +43,6 @@ public:
     void setup();
     void update();
     void draw();
-    void drawMasterOutput();
-    void drawMasterInput();
     void setFbo(ofFbo *);
     void addModuleParameters();
     ofFbo * getFbo();
@@ -65,8 +63,6 @@ public:
     void setup();
     void update();
     void draw();
-    void drawMasterOutput();
-    void drawMasterInput();
     void addModuleParameters();
     
     void serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg);
