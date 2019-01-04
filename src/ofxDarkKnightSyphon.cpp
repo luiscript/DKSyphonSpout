@@ -83,11 +83,19 @@ void DarkKnightSyphonClient::setup()
     alpha = 255;
     fbo = nullptr;
     drawFbo = false;
+#ifdef TARGET_OSX
     serverDirectory.setup();
     syphonClient.setup();
-    
     ofAddListener(serverDirectory.events.serverAnnounced, this, &DarkKnightSyphonClient::serverAnnounced);
     // ofAddListener(serverDirectory.events.serverRetired, this, &DarkKnightSyphonClient::serverRetired);
+	serversList = serverDirectory.getServerList();
+
+	for (auto server : serversList)
+	{
+		string option = server.serverName + ":" + server.appName;
+		serverOptions.push_back(option);
+	}
+#endif
     
     fbo = new ofFbo;
     fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGBA, 4);
@@ -95,16 +103,8 @@ void DarkKnightSyphonClient::setup()
     ofClear(0, 0, 0, 0);
     fbo->end();
     
-    serversList = serverDirectory.getServerList();
-    
-    for (auto server : serversList)
-    {
-        string option = server.serverName + ":" + server.appName;
-        serverOptions.push_back(option);
-    }
-    
     updateDropDownOptions();
-    
+   
     addOutputConnection(ConnectionType::DK_FBO);
 }
 
@@ -118,8 +118,9 @@ void DarkKnightSyphonClient::draw()
     if(drawFbo)
     {
         fbo->begin();
-        syphonClient.draw(0, 0);
-        
+#ifdef TARGET_OSX
+		syphonClient.draw(0, 0);
+#endif
         ofPushStyle();
         ofSetColor(0, 0, 0, 255 - alpha);
         ofFill();
@@ -148,10 +149,13 @@ void DarkKnightSyphonClient::addModuleParameters()
 void DarkKnightSyphonClient::onServerSelected(ofxDatGuiDropdownEvent e)
 {
     serverIndex = e.child;
+#ifdef TARGET_OSX
     syphonClient.set(serverDirectory.getDescription(serverIndex));
+#endif
     drawFbo = true;
 }
 
+#ifdef TARGET_OSX
 void DarkKnightSyphonClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg)
 {
     
@@ -163,6 +167,7 @@ void DarkKnightSyphonClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs &
     
     updateDropDownOptions();
 }
+#endif
 
 void DarkKnightSyphonClient::updateDropDownOptions()
 {
@@ -179,6 +184,5 @@ void DarkKnightSyphonClient::updateDropDownOptions()
     
     gui->setItems(items);
     gui->addDropdown("Select syphon server", serverOptions)->onDropdownEvent(this, &DarkKnightSyphonClient::onServerSelected);
-    
     gui->setWidth(450);
 }

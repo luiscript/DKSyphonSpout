@@ -51,12 +51,15 @@ public:
 
 class DarkKnightSyphonClient : public Module{
 private:
+	
+#ifdef TARGET_OSX
     ofxSyphonClient syphonClient;
     ofxSyphonServerDirectory serverDirectory;
+	vector<ofxSyphonServerDescription> serversList;
+#endif
     ofFbo * fbo;
     bool drawFbo = false;
     int serverIndex;
-    vector<ofxSyphonServerDescription> serversList;
     vector<string> serverOptions;
     int alpha;
 public:
@@ -64,10 +67,10 @@ public:
     void update();
     void draw();
     void addModuleParameters();
-    
+#ifdef TARGET_OSX
     void serverAnnounced(ofxSyphonServerDirectoryEventArgs &arg);
     void serverRetired(ofxSyphonServerDirectoryEventArgs &args);
-    
+#endif
     void onServerSelected(ofxDatGuiDropdownEvent e);
     void updateDropDownOptions();
     
