@@ -145,7 +145,7 @@ void DarkKnightTextureClient::updateDropDownOptions()
 
 	gui->setItems(items);
 	gui->addDropdown("Select server", serverOptions)->onDropdownEvent(this, &DarkKnightTextureClient::onServerSelected);
-	gui->setWidth(ofGetWidth()/5);
+	gui->setWidth(moduleGuiWidth);
 }
 
 void DarkKnightTextureClient::unMount()
