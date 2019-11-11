@@ -20,14 +20,14 @@
  SOFTWARE.
  */
 
-#include "DarkKnightTextureServer.h"
+#include "DKTextureServer.h"
 
-void DarkKnightTextureServer::setup()
+void DKTextureServer::setup()
 {
 	fbo = nullptr;
 	serverName = "output";
-	addInputConnection(ConnectionType::DK_FBO);
-	addOutputConnection(ConnectionType::DK_FBO);
+	addInputConnection(DKConnectionType::DK_FBO);
+	addOutputConnection(DKConnectionType::DK_FBO);
 
 #ifdef _WIN64
 	//spoutSender.init(serverName);
@@ -35,12 +35,12 @@ void DarkKnightTextureServer::setup()
 #endif
 }
 
-void DarkKnightTextureServer::update()
+void DKTextureServer::update()
 {
 
 }
 
-void DarkKnightTextureServer::draw()
+void DKTextureServer::draw()
 {
 	if (drawFbo)
 	{
@@ -55,7 +55,7 @@ void DarkKnightTextureServer::draw()
 
 }
 
-void DarkKnightTextureServer::setFbo(ofFbo* fboPtr)
+void DKTextureServer::setFbo(ofFbo* fboPtr)
 {
 	fbo = fboPtr;
 	drawFbo = fboPtr != nullptr;
@@ -67,23 +67,23 @@ void DarkKnightTextureServer::setFbo(ofFbo* fboPtr)
 	}
 }
 
-ofFbo* DarkKnightTextureServer::getFbo()
+ofFbo* DKTextureServer::getFbo()
 {
 	return fbo;
 }
 
-void DarkKnightTextureServer::addModuleParameters()
+void DKTextureServer::addModuleParameters()
 {
-	gui->onTextInputEvent(this, &DarkKnightTextureServer::onTextInputEvent);
+	gui->onTextInputEvent(this, &DKTextureServer::onTextInputEvent);
 	gui->addTextInput("Server name", "output");
 }
 
-void DarkKnightTextureServer::onTextInputEvent(ofxDatGuiTextInputEvent e)
+void DKTextureServer::onTextInputEvent(ofxDatGuiTextInputEvent e)
 {
 	serverName = e.target->getText();
 }
 
-void DarkKnightTextureServer::unMount()
+void DKTextureServer::unMount()
 {
 #ifdef _WIN32
 	spoutSender.exit();

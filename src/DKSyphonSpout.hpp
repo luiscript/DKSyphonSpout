@@ -1,16 +1,16 @@
 /*
- Copyright (C) 2019 Luis Fernando García [http://luiscript.com]
-
+ Copyright (C) 2019 Luis Fernando GarcÃ­a [http://luiscript.com]
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
+ 
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,44 +20,10 @@
  SOFTWARE.
  */
 
-#ifndef DarkKnightTextureServer_hpp
-#define DarkKnightTextureServer_hpp
+#ifndef DKSyphonSpout_hpp
+#define DKSyphonSpout_hpp
 
-#include "ofMain.h"
-#include "module.hpp"
+#include "DKTextureClient.h"
+#include "DKTextureServer.h"
 
-#ifdef TARGET_OSX
-#include "ofxSyphon.h"
-#endif
-
-#ifdef _WIN32
-#include "ofxSpout2Sender.h"
-#endif
-
-
-class DarkKnightTextureServer : public Module
-{
-private:
-#ifdef TARGET_OSX
-	ofxSyphonServer syphonOut;
-#endif
-
-#ifdef _WIN32
-	ofxSpout2::Sender spoutSender;
-#endif
-
-	ofFbo* fbo;
-	bool drawFbo = false;
-	string serverName;
-public:
-	void setup();
-	void update();
-	void draw();
-	void setFbo(ofFbo*);
-	void addModuleParameters();
-	ofFbo* getFbo();
-	void onTextInputEvent(ofxDatGuiTextInputEvent);
-	void unMount();
-};
-
-#endif /* DarkKnightTextureServer_hpp */
+#endif /* DKSyphonSpout_hpp */

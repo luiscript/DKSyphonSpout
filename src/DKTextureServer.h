@@ -20,45 +20,44 @@
  SOFTWARE.
  */
 
+#ifndef DKTextureServer_hpp
+#define DKTextureServer_hpp
+
 #include "ofMain.h"
-#include "module.hpp"
+#include "DKModule.hpp"
 
 #ifdef TARGET_OSX
 #include "ofxSyphon.h"
 #endif
 
 #ifdef _WIN32
-#include "ofxSpout2Receiver.h"
+#include "ofxSpout2Sender.h"
 #endif
 
-class DarkKnightTextureClient : public Module {
+
+class DKTextureServer : public DKModule
+{
 private:
-
 #ifdef TARGET_OSX
-	ofxSyphonClient syphonClient;
-	ofxSyphonServerDirectory serverDirectory;
-	vector<ofxSyphonServerDescription> serversList;
+	ofxSyphonServer syphonOut;
 #endif
+
 #ifdef _WIN32
-	ofxSpout2::Receiver spoutReceiver;
-#endif 
+	ofxSpout2::Sender spoutSender;
+#endif
+
 	ofFbo* fbo;
 	bool drawFbo = false;
-	int serverIndex;
-	vector<string> serverOptions;
-	int alpha;
+	string serverName;
 public:
 	void setup();
 	void update();
 	void draw();
+	void setFbo(ofFbo*);
 	void addModuleParameters();
-#ifdef TARGET_OSX
-	void serverAnnounced(ofxSyphonServerDirectoryEventArgs& arg);
-	//void serverRetired(ofxSyphonServerDirectoryEventArgs& args);
-#endif
-	void onServerSelected(ofxDatGuiDropdownEvent e);
-	void updateDropDownOptions();
-
 	ofFbo* getFbo();
+	void onTextInputEvent(ofxDatGuiTextInputEvent);
 	void unMount();
 };
+
+#endif /* DKTextureServer_hpp */

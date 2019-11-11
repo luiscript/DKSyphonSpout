@@ -20,9 +20,9 @@
  SOFTWARE.
  */
 
-#include "DarkKnightTextureClient.h"
+#include "DKTextureClient.h"
 
-void DarkKnightTextureClient::setup()
+void DKTextureClient::setup()
 {
 	alpha = 255;
 	fbo = nullptr;
@@ -30,7 +30,7 @@ void DarkKnightTextureClient::setup()
 #ifdef TARGET_OSX
 	serverDirectory.setup();
 	syphonClient.setup();
-	ofAddListener(serverDirectory.events.serverAnnounced, this, &DarkKnightSyphonClient::serverAnnounced);
+	ofAddListener(serverDirectory.events.serverAnnounced, this, &DKTextureClient::serverAnnounced);
 	// ofAddListener(serverDirectory.events.serverRetired, this, &DarkKnightSyphonClient::serverRetired);
 	serversList = serverDirectory.getServerList();
 
@@ -55,15 +55,15 @@ void DarkKnightTextureClient::setup()
 
 	updateDropDownOptions();
 
-	addOutputConnection(ConnectionType::DK_FBO);
+	addOutputConnection(DKConnectionType::DK_FBO);
 }
 
-void DarkKnightTextureClient::update()
+void DKTextureClient::update()
 {
 
 }
 
-void DarkKnightTextureClient::draw()
+void DKTextureClient::draw()
 {
 	if (drawFbo)
 	{
@@ -89,20 +89,20 @@ void DarkKnightTextureClient::draw()
 }
 
 
-ofFbo* DarkKnightTextureClient::getFbo()
+ofFbo* DKTextureClient::getFbo()
 {
 	return fbo;
 }
 
-void DarkKnightTextureClient::addModuleParameters()	
+void DKTextureClient::addModuleParameters()
 {
 
-	gui->addDropdown("Select server", serverOptions)->onDropdownEvent(this, &DarkKnightTextureClient::onServerSelected)
+	gui->addDropdown("Select server", serverOptions)->onDropdownEvent(this, &DKTextureClient::onServerSelected)
 		;
 	gui->addSlider("Alpha", 0, 255)->bind(alpha);
 }
 
-void DarkKnightTextureClient::onServerSelected(ofxDatGuiDropdownEvent e)
+void DKTextureClient::onServerSelected(ofxDatGuiDropdownEvent e)
 {
 	serverIndex = e.child;
 	drawFbo = true;
@@ -117,7 +117,7 @@ void DarkKnightTextureClient::onServerSelected(ofxDatGuiDropdownEvent e)
 }
 
 #ifdef TARGET_OSX
-void DarkKnightTextureClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs& arg)
+void DKTextureClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs& arg)
 {
 
 	for (auto& dir : arg.servers)
@@ -130,7 +130,7 @@ void DarkKnightTextureClient::serverAnnounced(ofxSyphonServerDirectoryEventArgs&
 }
 #endif
 
-void DarkKnightTextureClient::updateDropDownOptions()
+void DKTextureClient::updateDropDownOptions()
 {
 	vector<ofxDatGuiComponent*> items = gui->getItems();
 	int x = 0;
@@ -144,11 +144,11 @@ void DarkKnightTextureClient::updateDropDownOptions()
 	}
 
 	gui->setItems(items);
-	gui->addDropdown("Select server", serverOptions)->onDropdownEvent(this, &DarkKnightTextureClient::onServerSelected);
+	gui->addDropdown("Select server", serverOptions)->onDropdownEvent(this, &DKTextureClient::onServerSelected);
 	gui->setWidth(moduleGuiWidth);
 }
 
-void DarkKnightTextureClient::unMount()
+void DKTextureClient::unMount()
 {
 #ifdef _WIN32
 	//spoutReceiver.exit();
