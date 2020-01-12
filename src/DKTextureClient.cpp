@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2019 Luis Fernando García [http://luiscript.com]
+ Copyright (C) 2019 Luis Fernando Garc’a PŽrez [http://luiscript.com]
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ void DKTextureClient::setup()
 #endif
 
 	fbo = new ofFbo;
-	fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGBA, 4);
+	fbo->allocate(getModuleWidth(), getModuleHeight(), GL_RGBA);
 	fbo->begin();
 	ofClear(0, 0, 0, 0);
 	fbo->end();
@@ -70,7 +70,7 @@ void DKTextureClient::draw()
 
 #ifdef TARGET_OSX
 		fbo->begin();
-		syphonClient.draw(0, 0);
+        syphonClient.draw(0, 0);
 		fbo->end();
 #endif
 #ifdef _WIN32
